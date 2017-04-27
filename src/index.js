@@ -25,8 +25,8 @@ class Transform extends stream.Transform {
         process.nextTick(next)
     }
     _flush(next) {
-        /* istanbul ignore if  */
         if (!this.start) {
+            /* istanbul ignore next */
             this.push(this.intro)
         }
 
