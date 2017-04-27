@@ -1,14 +1,14 @@
 {
-  "name": "chef-template",
-  "version": "0.0.1",
+  "name": "halo-jsonp",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vue-tools/chef-template"
+    "url": "https://github.com/halojs/halo-jsonp"
   },
   "main": "dist/index.js",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vue-tools/chef-template/issues"
+    "url": "https://github.com/halojs/halo-jsonp/issues"
   },
   "scripts": {
     "test": "./node_modules/.bin/nyc ./node_modules/.bin/ava tests/index.js",
