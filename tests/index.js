@@ -12,17 +12,17 @@ const req = request.defaults({
 })
 
 test.before.cb((t) => {
-    let app = koa()
+    let app = new koa()
     
     app.use(jsonp())
-    app.use(mount('/buffered', function *() {
-        this.body = { ok: 1 }
+    app.use(mount('/buffered', async function(ctx, next) {
+        ctx.body = { ok: 1 }
     }))
-    app.use(mount('/null', function *() {
-        this.body = null
+    app.use(mount('/null', async function(ctx, next) {
+        ctx.body = null
     }))
-    app.use(mount('/stream', function *() {
-        this.body = fs.createReadStream(path.join(__dirname, 'stream.json'))
+    app.use(mount('/stream', async function(ctx, next) {
+        ctx.body = fs.createReadStream(path.join(__dirname, 'stream.json'))
     }))
     app.listen(3000, t.end)
 })

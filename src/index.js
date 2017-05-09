@@ -42,20 +42,20 @@ export default function (options) {
         callbackName: 'callback'
     }, options)
 
-    return function* _jsonp(next) {
+    return async function _jsonp(ctx, next) {
         let intro, outro, callback
 
-        yield* next
+        await next()
 
         intro = ''
         outro = ');'
-        callback = this.query[options.callbackName]
+        callback = ctx.query[options.callbackName]
 
         if (!callback) {
             return
         }
 
-        if (!this.body) {
+        if (!ctx.body) {
             return
         }
 
@@ -70,14 +70,14 @@ export default function (options) {
         callback = callback.replace(/[^\[\]\w\$\.]+/g, '')
         intro = `/**/ typeof ${callback} === 'function' && ${callback}(`
         
-        this.type = 'text/javascript'
-        this.set('X-Content-Type-Options', 'nosniff')
+        ctx.type = 'text/javascript'
+        ctx.set('X-Content-Type-Options', 'nosniff')
 
-        if (this.body.pipe) {
-            this.body = this.body.pipe(new Transform({ intro, outro }))
+        if (ctx.body.pipe) {
+            ctx.body = ctx.body.pipe(new Transform({ intro, outro }))
         } else {
-            this.body = `${intro}${JSON.stringify(this.body, null, null)}${outro}`
-            this.body = this.body.replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029')
+            ctx.body = `${intro}${JSON.stringify(ctx.body, null, null)}${outro}`
+            ctx.body = ctx.body.replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029')
         }
     }
 }
